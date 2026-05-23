@@ -1,20 +1,20 @@
-version: "3.9"
+name: kwak-finance
 
 services:
   db:
     image: postgres:16-alpine
-    container_name: projeto_db
+    container_name: kwak_finance_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: projeto
-      POSTGRES_PASSWORD: projetopass
-      POSTGRES_DB: projeto
+      POSTGRES_USER: kwak_finance
+      POSTGRES_PASSWORD: kwakfinancepass
+      POSTGRES_DB: kwak_finance
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - kwak_finance_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U projeto"]
+      test: ["CMD-SHELL", "pg_isready -U kwak_finance"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: projeto_app
+    container_name: kwak_finance_app
     restart: unless-stopped
     depends_on:
       db:
@@ -44,4 +44,4 @@ services:
       pnpm run dev"
 
 volumes:
-  postgres_data:
+  kwak_finance_postgres_data:
