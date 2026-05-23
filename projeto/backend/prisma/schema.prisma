@@ -6,3 +6,200 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum TipoConta {
+  CORRENTE
+  POUPANCA
+  CARTAO
+  INVESTIMENTO
+  CAIXA
+  OUTRO
+}
+
+enum PerfilConta {
+  PF
+  PJ
+}
+
+enum TipoTransacao {
+  RECEITA
+  DESPESA
+  TRANSFERENCIA
+}
+
+enum TipoInvest {
+  ACAO
+  FII
+  RENDA_FIXA
+  CRIPTO
+  FUNDO
+  TESOURO
+  PREVIDENCIA
+  OUTRO
+}
+
+enum TipoAporte {
+  COMPRA
+  VENDA
+  DIVIDENDO
+  RESGATE
+  JUROS
+}
+
+enum TipoEmpresa {
+  MEI
+  ME
+  EPP
+  LTDA
+  SA
+  AUTONOMO
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String
+  password      String
+  createdAt     DateTime       @default(now()) @map("created_at")
+  contas        Conta[]
+  transacoes    Transacao[]
+  investimentos Investimento[]
+  aportes       Aporte[]
+  metas         Meta[]
+  empresas      Empresa[]
+
+  @@map("users")
+}
+
+model Conta {
+  id          String      @id @default(cuid())
+  nome        String
+  tipo        TipoConta
+  perfil      PerfilConta
+  instituicao String
+  saldo       Float       @default(0)
+  cor         String
+  ativo       Boolean     @default(true)
+  empresaId   String?     @map("empresa_id")
+  userId      String      @map("user_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  empresa     Empresa?    @relation(fields: [empresaId], references: [id], onDelete: SetNull)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transacoes  Transacao[]
+
+  @@index([empresaId])
+  @@index([userId])
+  @@map("contas")
+}
+
+model Transacao {
+  id                String        @id @default(cuid())
+  descricao         String
+  valor             Float
+  tipo              TipoTransacao
+  categoria         String
+  subcategoria      String?
+  data              DateTime
+  competencia       DateTime
+  contaId           String        @map("conta_id")
+  perfil            PerfilConta
+  empresaId         String?       @map("empresa_id")
+  tags              String        @default("[]")
+  observacao        String?
+  recorrente        Boolean       @default(false)
+  categorizadoPorIA Boolean       @default(false) @map("categorizado_por_ia")
+  userId            String        @map("user_id")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  conta             Conta         @relation(fields: [contaId], references: [id], onDelete: Restrict)
+  empresa           Empresa?      @relation(fields: [empresaId], references: [id], onDelete: SetNull)
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contaId])
+  @@index([empresaId])
+  @@index([userId, data])
+  @@index([userId, competencia])
+  @@map("transacoes")
+}
+
+model Investimento {
+  id               String     @id @default(cuid())
+  nome             String
+  tipo             TipoInvest
+  corretora        String
+  quantidade       Float
+  precoMedio       Float      @map("preco_medio")
+  precoAtual       Float      @map("preco_atual")
+  valorInvestido   Float      @map("valor_investido")
+  valorAtual       Float      @map("valor_atual")
+  rentabilidade    Float
+  dataAporte       DateTime   @map("data_aporte")
+  vencimento       DateTime?
+  indexador        String?
+  percentualIndice Float?     @map("percentual_indice")
+  dividendos       Float      @default(0)
+  userId           String     @map("user_id")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aportes          Aporte[]
+
+  @@index([userId])
+  @@map("investimentos")
+}
+
+model Aporte {
+  id             String       @id @default(cuid())
+  investimentoId String       @map("investimento_id")
+  valor          Float
+  quantidade     Float?
+  preco          Float
+  data           DateTime
+  tipo           TipoAporte
+  userId         String       @map("user_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  investimento   Investimento @relation(fields: [investimentoId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([investimentoId])
+  @@index([userId])
+  @@map("aportes")
+}
+
+model Meta {
+  id         String   @id @default(cuid())
+  titulo     String
+  descricao  String?
+  valorAlvo  Float    @map("valor_alvo")
+  valorAtual Float    @default(0) @map("valor_atual")
+  prazo      DateTime
+  categoria  String
+  cor        String
+  concluida  Boolean  @default(false)
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("metas")
+}
+
+model Empresa {
+  id         String      @id @default(cuid())
+  nome       String
+  cnpj       String
+  tipo       TipoEmpresa
+  ativa      Boolean     @default(true)
+  userId     String      @map("user_id")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contas     Conta[]
+  transacoes Transacao[]
+
+  @@unique([userId, cnpj])
+  @@index([userId])
+  @@map("empresas")
+}
