@@ -1,0 +1,44 @@
+{
+  "name": "projeto",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build",
+    "start": "pnpm --dir frontend start",
+    "lint": "pnpm --dir frontend lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter frontend typecheck && pnpm --filter @financas360/backend typecheck",
+    "setup": "pnpm install && pnpm run db:generate",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:reset": "docker compose down -v && docker compose up --build",
+    "docker:logs": "docker compose logs -f app",
+    "docker:db:logs": "docker compose logs -f db",
+    "docker:db:studio": "docker compose exec app pnpm run db:studio",
+    "docker:shell": "docker compose exec app sh",
+    "docker:seed": "docker compose exec app pnpm run db:seed",
+    "db:generate": "prisma generate --schema backend/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema backend/prisma/schema.prisma",
+    "db:push": "prisma db push --schema backend/prisma/schema.prisma",
+    "db:seed": "tsx backend/prisma/seed.ts",
+    "db:studio": "prisma studio --schema backend/prisma/schema.prisma",
+    "db:reset": "prisma migrate reset --schema backend/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "prisma": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "tsx backend/prisma/seed.ts"
+  }
+}

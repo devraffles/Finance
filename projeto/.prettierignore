@@ -1,0 +1,8 @@
+node_modules
+.next
+frontend/.next
+dist
+build
+coverage
+dev-server.log
+dev-server.err.log

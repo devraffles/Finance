@@ -16,3 +16,7 @@ projeto/node_modules
 projeto/frontend/.next
 projeto/dev-server.log
 projeto/dev-server.err.log
+
+/.obsidian/
+/.serena/
+/app/
