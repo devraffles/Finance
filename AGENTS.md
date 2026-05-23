@@ -17,7 +17,7 @@ Stack alvo:
 - Next.js 14 com App Router e TypeScript
 - PostgreSQL com Prisma via Docker Compose
 - Tailwind CSS com componentes no estilo shadcn/ui
-- NextAuth com Credentials Provider
+- Better Auth com email e senha via Prisma/PostgreSQL
 - Claude API via `@anthropic-ai/sdk`
 - Recharts, lucide-react, date-fns, Zod, react-hook-form
 - pnpm como package manager

@@ -43,4 +43,4 @@ pnpm run db:studio
 
 ## Seguranca
 
-Os arquivos de ambiente atuais usam valores locais ficticios. Substitua `NEXTAUTH_SECRET`, `POSTGRES_PASSWORD` e demais valores sensiveis fora do controle de versao em ambientes reais.
+Os arquivos de ambiente atuais usam valores locais ficticios. Substitua `BETTER_AUTH_SECRET`, `POSTGRES_PASSWORD` e demais valores sensiveis fora do controle de versao em ambientes reais.

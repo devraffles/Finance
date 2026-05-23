@@ -39,7 +39,7 @@ Tarefas:
 - Criar `projeto/.env.local` para execucao local com `DATABASE_URL` apontando para `localhost:5432`.
 - Instalar dependencias de runtime do prompt no workspace correto:
   - UI, charts, forms e cliente auth em `frontend`;
-  - Prisma, NextAuth server config, Zod, Claude SDK e bibliotecas de dominio em `backend` quando forem server-side.
+  - Prisma, Better Auth server config, Zod, Claude SDK e bibliotecas de dominio em `backend` quando forem server-side.
 - Instalar dependencias dev no workspace correto, mantendo Prettier, ESLint e TypeScript acessiveis pela raiz `projeto/`.
 - Adicionar Prettier e integracao ESLint na raiz:
   - `prettier`
@@ -106,8 +106,8 @@ Objetivo: deixar infraestrutura de aplicacao pronta.
 
 Tarefas:
 
-- Criar `projeto/backend/src/lib/auth.ts` com autenticacao Credentials e validacao do usuario seed.
-- Criar adapter NextAuth em `projeto/frontend/src/app/api/auth/[...nextauth]/route.ts` importando apenas configuracao server-side do backend.
+- Criar `projeto/backend/src/lib/auth.ts` com Better Auth, email/senha, Prisma adapter e validacao Zod de configuracao/credenciais.
+- Criar adapter Better Auth em `projeto/frontend/src/app/api/auth/[...all]/route.ts` importando apenas configuracao server-side do backend.
 - Criar `projeto/frontend/src/lib/utils.ts` com `cn`, formatadores e helpers financeiros sem dependencia de Prisma, IA ou segredos.
 - Criar `projeto/backend/src/lib/claude.ts` com wrapper e tratamento quando API key estiver ausente.
 - Criar tipos de dominio em `projeto/backend/src/types/financas.ts`.

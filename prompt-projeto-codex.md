@@ -196,9 +196,9 @@ coverage
 # PostgreSQL
 DATABASE_URL="postgresql://projeto:projetopass@db:5432/projeto"
 
-# NextAuth
-NEXTAUTH_SECRET="projeto-secret-local-dev-change-in-production"
-NEXTAUTH_URL="http://localhost:3000"
+# Better Auth
+BETTER_AUTH_SECRET="projeto-secret-local-dev-change-in-production"
+BETTER_AUTH_URL="http://localhost:3000"
 
 # Anthropic
 ANTHROPIC_API_KEY=""
@@ -232,13 +232,12 @@ Instale as dependências:
 
 ```bash
 pnpm add \
-  prisma @prisma/client @auth/prisma-adapter next-auth \
+  prisma @prisma/client better-auth \
   @anthropic-ai/sdk \
   react-hook-form @hookform/resolvers zod \
   recharts \
   lucide-react \
   date-fns \
-  bcryptjs @types/bcryptjs \
   @radix-ui/react-dialog @radix-ui/react-dropdown-menu \
   @radix-ui/react-select @radix-ui/react-alert-dialog \
   @radix-ui/react-progress @radix-ui/react-tabs \
@@ -337,12 +336,12 @@ O seed deve ser **idempotente** — verificar se dados já existem antes de inse
 
 **`backend/src/lib/prisma.ts`** — singleton do PrismaClient com hot-reload seguro para Next.js (verificar `global.__prisma`).
 
-**`backend/src/lib/auth.ts`** — NextAuth com `CredentialsProvider`:
+**`backend/src/lib/auth.ts`** — Better Auth com email e senha:
 
-- Validar email + senha com `bcrypt.compare`
-- Sessão JWT com `id`, `name`, `email`
-- Callbacks `session` e `jwt` para propagar `user.id`
-- Exportar `authOptions` e helper `getSession()` para Server Components
+- Usar Prisma adapter com provider `postgresql`
+- Habilitar `emailAndPassword`
+- Validar variáveis de ambiente e credenciais com Zod
+- Exportar `auth` e helper `getSession(headers)` para Server Components e route handlers
 
 **`backend/src/lib/claude.ts`** — wrapper da Anthropic SDK:
 
@@ -414,7 +413,7 @@ export function slugify(str: string): string;
 - Design dark premium com gradiente sutil no background
 - Logo + nome do produto
 - Form com `react-hook-form` + Zod (email obrigatório, senha mínimo 6 caracteres)
-- Chamada a `signIn('credentials', { email, password, redirect: false })`
+- Chamada ao cliente Better Auth com email e senha
 - Tratamento de erro com toast
 - Ícone de show/hide password
 

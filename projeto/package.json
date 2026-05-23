@@ -7,9 +7,9 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "pnpm --dir frontend dev",
-    "build": "pnpm --dir frontend build",
-    "start": "pnpm --dir frontend start",
+    "dev": "dotenv -e .env.local -- pnpm --dir frontend dev",
+    "build": "dotenv -e .env -- pnpm --dir frontend build",
+    "start": "dotenv -e .env -- pnpm --dir frontend start",
     "lint": "pnpm --dir frontend lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -31,6 +31,7 @@
     "db:reset": "prisma migrate reset --schema backend/prisma/schema.prisma"
   },
   "devDependencies": {
+    "dotenv-cli": "^11.0.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.4.2",
     "prisma": "^6.0.1",
