@@ -37,6 +37,8 @@ Quando a tarefa tocar fluxo visual importante, valide manualmente no navegador.
 - Nao esconda falhas de comando.
 - Se nao conseguir rodar validacao por falta de dependencia, rede ou chave, informe claramente.
 - Nao diga que algo esta completo se nao foi validado.
+- Para formularios com datas, valide casos de data invalida, limite inicial/final e normalizacao com Day.js.
+- Para empresas, valide CNPJ valido, CNPJ invalido e CNPJ duplicado do mesmo usuario.
 
 ## README
 

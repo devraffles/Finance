@@ -1,6 +1,6 @@
 # Frontend
 
-Aplicacao Next.js 14 do Financas 360.
+Aplicacao Next.js 14 do Kwak Finance.
 
 ## Scripts
 

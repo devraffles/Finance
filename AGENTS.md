@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Este arquivo e a fonte principal de regras para construir o projeto Financas 360. Antes de qualquer implementacao, leia este arquivo e as regras em `.codex/rules/`.
+Este arquivo e a fonte principal de regras para construir o projeto Kwak Finance. Antes de qualquer implementacao, leia este arquivo e as regras em `.codex/rules/`.
 
 No momento, este repositorio contem o prompt de construcao e configuracoes de apoio. Nao assuma que o app Next.js ja existe ate encontrar `projeto/package.json` ou uma estrutura equivalente criada explicitamente.
 
@@ -12,14 +12,17 @@ Construir uma aplicacao web local de gestao financeira integrada para:
 - Financas empresariais (MEI/PJ)
 - Investimentos
 
+Nome oficial do produto: **Kwak Finance**. Use este nome em interface, README, documentacao, Docker, seeds e textos de apoio. Nao use "Financas 360" como nome do produto.
+
 Stack alvo:
 
 - Next.js 14 com App Router e TypeScript
 - PostgreSQL com Prisma via Docker Compose
-- Tailwind CSS com componentes no estilo shadcn/ui
+- Tailwind CSS com componentes shadcn/ui como padrao preferido de UI
 - Better Auth com email e senha via Prisma/PostgreSQL
 - Claude API via `@anthropic-ai/sdk`
-- Recharts, lucide-react, date-fns, Zod, react-hook-form
+- Recharts, lucide-react, Day.js, Zod, react-hook-form
+- Bibliotecas especializadas para validacao de campos brasileiros quando aplicavel, por exemplo CPF/CNPJ
 - pnpm como package manager
 - ESLint com Prettier
 
@@ -37,6 +40,8 @@ Stack alvo:
 - Nunca use `any`.
 - Prefira named exports.
 - Valide entradas de API com Zod.
+- Use Day.js para parsing, normalizacao, comparacao e validacao de datas de entrada.
+- Use bibliotecas confiaveis para validacoes brasileiras especificas, como CNPJ e CPF; integre essas validacoes via Zod.
 - Toda rota protegida deve verificar sessao e filtrar por `userId`.
 - Nunca retorne dados de outro usuario.
 - Nunca coloque segredos reais em arquivos versionaveis.
@@ -44,6 +49,10 @@ Stack alvo:
 - Use formato monetario `R$` em `pt-BR`.
 - Use datas de exibicao em `dd/MM/yyyy`.
 - Use PostgreSQL via Docker Compose como banco padrao.
+- Use Docker Compose dedicado ao Kwak Finance, com namespace/containeres exclusivos do projeto.
+- O Compose deve declarar `name: kwak-finance`.
+- Os containeres padrao devem ser `kwak_finance_app` e `kwak_finance_db`.
+- Volumes Docker devem usar prefixo `kwak_finance_`, por exemplo `kwak_finance_postgres_data`.
 - Use Prisma diretamente nas rotas ou em funcoes de servico locais, mantendo ownership e validacao defensiva.
 - Use `pnpm` para criar o projeto, instalar dependencias e executar scripts.
 - Configure Prettier e ESLint logo na fundacao do projeto.
@@ -98,7 +107,7 @@ O app so esta concluido quando:
 1. `pnpm run setup` executa sem erros.
 2. `pnpm run docker:up` sobe PostgreSQL e app sem erros.
 3. `pnpm run dev` sobe em `http://localhost:3000` quando usado fora do Docker com PostgreSQL local.
-4. Login funciona com `admin@projeto.local` / `admin123`.
+4. Login funciona com `admin@kwakfinance.local` / `admin123`.
 5. Dashboard exibe KPIs reais calculados a partir do seed.
 6. Importacao de CSV Nubank funciona.
 7. Categorizacao por IA retorna resultado quando `ANTHROPIC_API_KEY` esta configurada.

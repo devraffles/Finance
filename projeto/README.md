@@ -1,4 +1,4 @@
-# Financas 360
+# Kwak Finance
 
 Aplicacao web local para gestao financeira integrada de PF, PJ/MEI e investimentos.
 
@@ -8,11 +8,11 @@ Fundacao criada ate a Task 02:
 
 - workspace pnpm em `projeto/`;
 - frontend Next.js 14 em `frontend/`, com App Router, TypeScript, Tailwind CSS e ESLint;
-- backend interno `@financas360/backend` em `backend/`, com TypeScript e Prisma;
+- backend interno `@kwak-finance/backend` em `backend/`, com TypeScript e Prisma;
 - Prisma inicializado em `backend/prisma/schema.prisma` com provider `postgresql`;
-- Docker Compose com servicos `app` e `db`;
-- Dockerfile com Node 20 Alpine e pnpm via Corepack;
-- arquivos `.env`, `.env.local` e `.env.example` com placeholders seguros.
+- Docker Compose dedicado `kwak-finance` com containeres `kwak_finance_app` e `kwak_finance_db`;
+- Dockerfile com Node 24 Alpine e pnpm via Corepack;
+- arquivos `.env` e `.env.example` com placeholders seguros.
 
 ## Pre-requisitos verificados
 

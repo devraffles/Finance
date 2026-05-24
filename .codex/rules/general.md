@@ -2,7 +2,9 @@
 
 ## Escopo
 
-- Este workspace e a base de preparacao do Financas 360.
+- Este workspace e a base de preparacao do Kwak Finance.
+- O nome oficial do produto e Kwak Finance. Use esse nome em UI, README, documentacao, Docker, seed e textos de apoio.
+- Nao use "Financas 360" como nome do produto; trate referencias antigas como legado a ser corrigido quando tocar no arquivo.
 - O prompt principal esta em `prompt-projeto-codex.md`.
 - A aplicacao final deve ser criada em `projeto/`, salvo instrucao contraria do usuario.
 - Antes de implementar, confirme que a tarefa atual pede implementacao. Se pedir apenas regras, revisao, planejamento ou documentacao, nao crie codigo da aplicacao.

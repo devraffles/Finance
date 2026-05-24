@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Este diretório contém a aplicação Finanças 360.
+Este diretorio contem a aplicacao Kwak Finance.
 
 As regras principais continuam na raiz do workspace:
 

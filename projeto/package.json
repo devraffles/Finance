@@ -8,7 +8,7 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "dotenv -e .env.local -- pnpm --dir frontend dev",
+    "dev": "dotenv -e .env -- pnpm --dir frontend dev",
     "build": "dotenv -e .env -- pnpm --dir frontend build",
     "start": "dotenv -e .env -- pnpm --dir frontend start",
     "lint": "pnpm --dir frontend lint",
@@ -25,11 +25,11 @@
     "docker:shell": "docker compose exec app sh",
     "docker:seed": "docker compose exec app pnpm exec prisma db seed",
     "db:generate": "prisma generate --schema backend/prisma/schema.prisma",
-    "db:migrate": "dotenv -e .env.local -- prisma migrate dev --schema backend/prisma/schema.prisma",
-    "db:push": "dotenv -e .env.local -- prisma db push --schema backend/prisma/schema.prisma",
-    "db:seed": "dotenv -e .env.local -- tsx backend/prisma/seed.ts",
-    "db:studio": "dotenv -e .env.local -- prisma studio --schema backend/prisma/schema.prisma",
-    "db:reset": "dotenv -e .env.local -- prisma migrate reset --schema backend/prisma/schema.prisma"
+    "db:migrate": "dotenv -e .env -- prisma migrate dev --schema backend/prisma/schema.prisma",
+    "db:push": "dotenv -e .env -- prisma db push --schema backend/prisma/schema.prisma",
+    "db:seed": "dotenv -e .env -- tsx backend/prisma/seed.ts",
+    "db:studio": "dotenv -e .env -- prisma studio --schema backend/prisma/schema.prisma",
+    "db:reset": "dotenv -e .env -- prisma migrate reset --schema backend/prisma/schema.prisma"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",

@@ -17,6 +17,9 @@ paths:
 - Use `async/await` em fluxos assincronos.
 - Prefira early returns.
 - Ao receber mais de dois parametros, receba um objeto nomeado.
+- Use Zod para validar entradas de API, formularios e respostas externas.
+- Use Day.js para parsing, normalizacao, comparacao e validacao de datas de entrada.
+- Para validacoes de dominio brasileiras, como CPF e CNPJ, use bibliotecas especializadas e integre o resultado via `z.refine` ou helpers tipados.
 
 ## Nomenclatura
 
@@ -65,4 +68,3 @@ export const KpiCard = ({ title, value, variation, className }: KpiCardProps) =>
   );
 };
 ```
-

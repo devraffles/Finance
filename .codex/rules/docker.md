@@ -2,9 +2,12 @@
 
 ## Padrao Oficial
 
-- O banco padrao do Financas 360 e PostgreSQL via Docker Compose.
+- O banco padrao do Kwak Finance e PostgreSQL via Docker Compose.
 - A execucao recomendada do app completo deve ser `pnpm run docker:up` dentro de `projeto/`.
+- O Compose deve ser dedicado ao Kwak Finance e declarar `name: kwak-finance`.
 - O Docker Compose deve conter os servicos `app` e `db`.
+- Os containeres devem ser exclusivos do projeto: `kwak_finance_app` para o app e `kwak_finance_db` para o PostgreSQL.
+- Volumes, redes e nomes persistentes devem usar prefixo `kwak_finance_`.
 - O servico `db` deve usar `postgres:16-alpine`.
 - O servico `db` deve ter volume nomeado para persistencia e `healthcheck` com `pg_isready`.
 - O servico `app` deve usar imagem base `node:20-alpine` no `Dockerfile`.

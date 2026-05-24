@@ -46,8 +46,15 @@ Enums obrigatorios:
 
 - `data`: data real do evento financeiro.
 - `competencia`: periodo contabil/gerencial da transacao.
+- Use Day.js para normalizar datas recebidas de formularios, CSVs e APIs antes de persistir.
 - Para exibicao, use `dd/MM/yyyy`.
 - Para agrupamentos mensais, normalize cuidadosamente por ano e mes.
+
+## Validacoes Brasileiras
+
+- CNPJ de empresas deve ser validado com biblioteca confiavel antes de persistir.
+- CPF/CNPJ, quando adicionados a novos fluxos, devem ser validados no schema Zod com helper especializado.
+- Nao aceite apenas mascara visual como validacao de documento.
 
 ## Seed
 

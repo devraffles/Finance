@@ -8,6 +8,8 @@
 - Use dark premium com contraste suficiente.
 - Use Sora para titulos e DM Sans para texto, conforme o prompt.
 - Use lucide-react para icones.
+- Use shadcn/ui como base padrao para componentes reutilizaveis.
+- Quando uma tela precisar de componentes novos, pode usar a CLI do shadcn/ui para adicionar apenas os componentes necessarios.
 
 ## Layout
 
@@ -20,6 +22,7 @@
 
 ## Controles
 
+- Prefira componentes shadcn/ui para botoes, inputs, labels, dialogs, selects, tabs, tables, cards, popovers, tooltips e formularios.
 - Use tabs para secoes de configuracao.
 - Use selects para opcoes fechadas.
 - Use badges para perfil, tipo, categoria e status.
@@ -58,4 +61,3 @@ Evite:
 - `CategoriasDespesaChart`: donut com top categorias.
 - Investimentos: donut de alocacao e linha de rentabilidade.
 - Empresarial: faturamento mensal e previsto vs realizado.
-

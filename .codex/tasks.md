@@ -1,4 +1,4 @@
-# Tasks De Execucao - Financas 360
+# Tasks De Execucao - Kwak Finance
 
 Este arquivo transforma `prompt-projeto-codex.md` em uma fila de trabalho executavel. O prompt continua sendo a especificacao de produto; este arquivo define ordem, entregaveis e criterios de aceite.
 
@@ -8,11 +8,15 @@ Nao execute estas tarefas ate o usuario pedir explicitamente para implementar.
 
 - Package manager: `pnpm`.
 - Projeto final: `projeto/`, usado como raiz de workspace, Docker, envs e scripts operacionais.
+- Nome oficial do produto: Kwak Finance.
 - Frontend: `projeto/frontend/`, contendo o app Next.js 14, App Router, paginas, layouts, componentes, estilos e chamadas HTTP.
 - Backend: `projeto/backend/`, contendo Prisma, seed, autenticacao, schemas Zod, servicos, regras de dominio, integracoes externas e acesso a dados.
 - O backend nao deve ser tratado como componentes de UI. Quando usar Next.js API Routes, crie adapters em `projeto/frontend/src/app/api/**` que chamam funcoes do backend, mantendo validacao, ownership e persistencia em `projeto/backend/`.
 - Scripts obrigatorios devem ser expostos no `package.json` de `projeto/`, mesmo quando delegarem para `frontend/` ou `backend/`.
 - Banco padrao: PostgreSQL via Docker Compose.
+- UI deve usar shadcn/ui como base padrao para componentes reutilizaveis.
+- Datas de entrada devem ser parseadas, normalizadas e validadas com Day.js.
+- Campos brasileiros, como CNPJ e CPF, devem usar bibliotecas especializadas integradas aos schemas Zod.
 - Cada fase deve terminar com validacao objetiva.
 - Nao avance para uma fase dependente se a fase anterior estiver quebrada.
 - Sempre atualize README ou notas tecnicas quando uma decisao importante mudar o uso do projeto.
@@ -28,18 +32,19 @@ Tarefas:
 - Criar `projeto/pnpm-workspace.yaml` incluindo `frontend` e `backend`.
 - Criar app frontend com `pnpm dlx create-next-app@latest projeto/frontend --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --no-git`.
 - Criar pacote backend em `projeto/backend/` com `package.json`, `tsconfig.json` e `src/`.
-- Configurar o backend como pacote interno, por exemplo `@financas360/backend`, para uso apenas em codigo server-side.
+- Configurar o backend como pacote interno `@kwak-finance/backend`, para uso apenas em codigo server-side.
 - Entrar em `projeto/`.
 - Garantir uso de `pnpm`.
 - Criar `projeto/Dockerfile` com `node:20-alpine`, `corepack enable` e instalacao via pnpm na raiz do workspace.
-- Criar `projeto/docker-compose.yml` com servicos `app` e `db`.
+- Criar `projeto/docker-compose.yml` com `name: kwak-finance` e servicos `app` e `db`.
+- Configurar containeres exclusivos `kwak_finance_app` e `kwak_finance_db`, com volumes/redes usando prefixo `kwak_finance_`.
 - Criar `projeto/.dockerignore`.
 - Criar `projeto/.env.example` com placeholders seguros.
 - Criar `projeto/.env` para Docker com `DATABASE_URL` apontando para `db:5432`.
 - Criar `projeto/.env.local` para execucao local com `DATABASE_URL` apontando para `localhost:5432`.
 - Instalar dependencias de runtime do prompt no workspace correto:
   - UI, charts, forms e cliente auth em `frontend`;
-  - Prisma, Better Auth server config, Zod, Claude SDK e bibliotecas de dominio em `backend` quando forem server-side.
+  - Prisma, Better Auth server config, Zod, Claude SDK, Day.js e bibliotecas de dominio/validacao em `backend` quando forem server-side.
 - Instalar dependencias dev no workspace correto, mantendo Prettier, ESLint e TypeScript acessiveis pela raiz `projeto/`.
 - Adicionar Prettier e integracao ESLint na raiz:
   - `prettier`
@@ -146,6 +151,7 @@ Objetivo: implementar endpoints protegidos e validados no backend.
 Tarefas:
 
 - Criar schemas Zod para payloads e filtros.
+- Criar helpers de validacao com Day.js para datas e bibliotecas especializadas para CNPJ/CPF quando aplicavel.
 - Implementar schemas em `projeto/backend/src/schemas/`.
 - Implementar servicos de dominio em `projeto/backend/src/services/`.
 - Implementar handlers/adapters HTTP em `projeto/frontend/src/app/api/**/route.ts` chamando os servicos do backend.
@@ -165,6 +171,7 @@ Aceite:
 - Nenhuma pagina ou componente visual importa Prisma, Claude SDK, variaveis secretas ou servicos de persistencia.
 - Route handlers em `projeto/frontend/src/app/api/**` ficam finos e delegam regra de dominio para `projeto/backend/`.
 - Payloads invalidos retornam `400`.
+- Datas invalidas e documentos brasileiros invalidos retornam `400`.
 - Recurso inexistente/sem ownership retorna `404`.
 - Listagens tem ordenacao explicita.
 

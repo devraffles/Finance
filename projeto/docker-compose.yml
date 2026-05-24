@@ -31,6 +31,8 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://kwak_finance:kwakfinancepass@db:5432/kwak_finance
     ports:
       - "3000:3000"
     volumes:

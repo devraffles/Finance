@@ -1,4 +1,4 @@
-# PROMPT — Finanças 360
+# PROMPT — Kwak Finance
 
 > **Para agentes de codificação autônomo (OpenAI Codex, Claude Code, etc.)**
 > Leia este documento inteiro antes de escrever qualquer código ou executar qualquer comando.
@@ -26,6 +26,10 @@ Construir uma aplicação web local de gestão financeira pessoal e empresarial,
 **Stack:** Next.js 14 + TypeScript + PostgreSQL + Prisma + Tailwind CSS + shadcn/ui + Claude API
 **Infraestrutura:** Docker Compose (PostgreSQL + aplicação)
 **Inicialização recomendada:** `pnpm run docker:up` → app em `http://localhost:3000`
+
+**Nome oficial do produto:** Kwak Finance. Use este nome em UI, README, Docker, seed e documentacao. Referencias antigas a "Finanças 360" devem ser tratadas como legado e substituidas ao tocar no arquivo.
+
+**Docker dedicado:** o Compose deve declarar `name: kwak-finance`; os containeres padrao devem ser `kwak_finance_app` e `kwak_finance_db`; volumes/redes devem usar prefixo `kwak_finance_`.
 
 ---
 
@@ -73,23 +77,23 @@ Backend e frontend devem permanecer separados:
 ### `docker-compose.yml`
 
 ```yaml
-version: "3.9"
+name: kwak-finance
 
 services:
   db:
     image: postgres:16-alpine
-    container_name: projeto_db
+    container_name: kwak_finance_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: projeto
-      POSTGRES_PASSWORD: projetopass
-      POSTGRES_DB: projeto
+      POSTGRES_USER: kwak_finance
+      POSTGRES_PASSWORD: kwakfinancepass
+      POSTGRES_DB: kwak_finance
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - kwak_finance_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U projeto"]
+      test: ["CMD-SHELL", "pg_isready -U kwak_finance"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -99,7 +103,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: projeto_app
+    container_name: kwak_finance_app
     restart: unless-stopped
     depends_on:
       db:
@@ -115,7 +119,7 @@ services:
     command: sh -c "corepack enable && pnpm exec prisma migrate deploy && pnpm exec prisma db seed && pnpm run dev"
 
 volumes:
-  postgres_data:
+  kwak_finance_postgres_data:
 ```
 
 ### `docker-compose.override.yml`
@@ -194,17 +198,17 @@ coverage
 
 ```env
 # PostgreSQL
-DATABASE_URL="postgresql://projeto:projetopass@db:5432/projeto"
+DATABASE_URL="postgresql://kwak_finance:kwakfinancepass@db:5432/kwak_finance"
 
 # Better Auth
-BETTER_AUTH_SECRET="projeto-secret-local-dev-change-in-production"
+BETTER_AUTH_SECRET="kwak-finance-secret-local-dev-change-in-production"
 BETTER_AUTH_URL="http://localhost:3000"
 
 # Anthropic
 ANTHROPIC_API_KEY=""
 
 # Seed
-SEED_USER_EMAIL="admin@projeto.local"
+SEED_USER_EMAIL="admin@kwakfinance.local"
 SEED_USER_PASSWORD="admin123"
 SEED_USER_NAME="Administrador"
 ```
@@ -420,7 +424,7 @@ export function slugify(str: string): string;
 **`src/components/layout/Sidebar.tsx`:**
 
 - Largura fixa 240px desktop, overlay em mobile
-- Logo "Finanças 360" com ícone
+- Logo "Kwak Finance" com ícone
 - Grupos de navegação com labels de seção:
   - **VISÃO GERAL:** Dashboard
   - **FINANÇAS:** Contas, Transações, Metas
@@ -686,7 +690,7 @@ pnpm run docker:up
 
 # 4. Acesse
 # http://localhost:3000
-# Login: admin@projeto.local / admin123
+# Login: admin@kwakfinance.local / admin123
 ```
 
 ### Quick Start (Local, sem Docker)
@@ -733,7 +737,7 @@ O projeto está concluído **somente quando todos os itens abaixo passarem**:
 | --- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | 1   | `pnpm run docker:up` executa sem erros                         | Terminal não exibe erros após build                                                |
 | 2   | App disponível em `http://localhost:3000`                      | Página de login carrega                                                            |
-| 3   | Login funciona                                                 | `admin@projeto.local` / `admin123` autentica e redireciona para `/dashboard`   |
+| 3   | Login funciona                                                 | `admin@kwakfinance.local` / `admin123` autentica e redireciona para `/dashboard`   |
 | 4   | Dashboard exibe dados reais                                    | KPIs mostram valores calculados a partir do seed (não zeros)                       |
 | 5   | Módulo de Contas funciona                                      | 4 contas do seed aparecem, modal criar/editar abre e salva                         |
 | 6   | Import CSV Nubank funciona                                     | Upload de `.csv` no formato Nubank importa transações corretamente                 |
