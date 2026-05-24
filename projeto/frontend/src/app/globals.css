@@ -1,22 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --kwak-navy-950: #000542;
+  --kwak-navy-900: #020a58;
+  --kwak-blue-700: #0f48b8;
+  --kwak-blue-600: #246ee9;
+  --kwak-blue-500: #4f8df5;
+  --kwak-lavender-400: #8d9af4;
+  --kwak-lavender-200: #cdd5fb;
+  --kwak-ice-100: #def5fb;
+  --kwak-ice-50: #f4fbff;
+  --kwak-graphite-950: #17191d;
+  --kwak-graphite-800: #3c444b;
+  --kwak-graphite-600: #65727a;
+  --kwak-border: #29317a;
+  --kwak-surface: #06115f;
+  --kwak-surface-muted: #101b74;
+  --background: var(--kwak-navy-950);
+  --foreground: var(--kwak-ice-50);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-kwak-navy-950: var(--kwak-navy-950);
+  --color-kwak-navy-900: var(--kwak-navy-900);
+  --color-kwak-blue-700: var(--kwak-blue-700);
+  --color-kwak-blue-600: var(--kwak-blue-600);
+  --color-kwak-blue-500: var(--kwak-blue-500);
+  --color-kwak-lavender-400: var(--kwak-lavender-400);
+  --color-kwak-lavender-200: var(--kwak-lavender-200);
+  --color-kwak-ice-100: var(--kwak-ice-100);
+  --color-kwak-ice-50: var(--kwak-ice-50);
+  --color-kwak-graphite-950: var(--kwak-graphite-950);
+  --color-kwak-graphite-800: var(--kwak-graphite-800);
+  --color-kwak-graphite-600: var(--kwak-graphite-600);
+  --color-kwak-border: var(--kwak-border);
+  --color-kwak-surface: var(--kwak-surface);
+  --color-kwak-surface-muted: var(--kwak-surface-muted);
   --font-sans: var(--font-dm-sans);
   --font-heading: var(--font-sora);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--kwak-navy-950);
+    --foreground: var(--kwak-ice-50);
   }
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
