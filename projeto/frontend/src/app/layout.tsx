@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 import { DM_Sans, Sora } from "next/font/google";
+import { Toaster } from "sonner";
+
 import "./globals.css";
 
 const sora = Sora({
@@ -13,8 +16,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Financas 360",
+  title: "Kwak Finance",
   description: "Gestao financeira integrada para PF, PJ e investimentos.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -27,7 +35,10 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${sora.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Toaster position="bottom-right" richColors theme="dark" />
+      </body>
     </html>
   );
 }

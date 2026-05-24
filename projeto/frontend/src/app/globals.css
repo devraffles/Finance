@@ -16,6 +16,7 @@
   --kwak-border: #29317a;
   --kwak-surface: #06115f;
   --kwak-surface-muted: #101b74;
+  --accent-blue: var(--kwak-blue-600);
   --background: var(--kwak-navy-950);
   --foreground: var(--kwak-ice-50);
 }
