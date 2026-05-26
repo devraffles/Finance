@@ -15,6 +15,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "pnpm --filter frontend typecheck && pnpm --filter @kwak-finance/backend typecheck",
+    "test": "pnpm --filter @kwak-finance/backend test && pnpm --filter frontend test",
+    "test:backend": "pnpm --filter @kwak-finance/backend test",
+    "test:frontend": "pnpm --filter frontend test",
+    "test:e2e": "playwright test",
+    "test:coverage": "pnpm --filter @kwak-finance/backend run coverage && pnpm --filter frontend run coverage",
     "setup": "pnpm install && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down",
@@ -32,6 +37,7 @@
     "db:reset": "dotenv -e .env -- prisma migrate reset --schema backend/prisma/schema.prisma"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "dotenv-cli": "^11.0.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.4.2",
