@@ -42,21 +42,30 @@ export const LoginForm = () => {
       return;
     }
 
-    const result = await authClient.signIn.email({
-      email: parsed.data.email,
-      password: parsed.data.password,
-    });
-
-    if (result.error) {
-      toast.error("Nao foi possivel entrar", {
-        description: "Confira o e-mail e a senha informados.",
+    try {
+      const result = await authClient.signIn.email({
+        email: parsed.data.email,
+        password: parsed.data.password,
       });
-      return;
-    }
 
-    toast.success("Sessao iniciada");
-    router.replace("/dashboard");
-    router.refresh();
+      if (result.error) {
+        setError("password", {
+          message: "Confira o e-mail e a senha informados.",
+        });
+        toast.error("Nao foi possivel entrar", {
+          description: "Confira o e-mail e a senha informados.",
+        });
+        return;
+      }
+
+      toast.success("Sessao iniciada");
+      router.replace("/dashboard");
+      router.refresh();
+    } catch {
+      toast.error("Nao foi possivel entrar", {
+        description: "Tente novamente em alguns instantes.",
+      });
+    }
   };
 
   return (

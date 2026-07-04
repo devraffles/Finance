@@ -13,7 +13,7 @@ projeto/
     src/
       lib/
         auth.ts
-        claude.ts
+        gemini.ts
         prisma.ts
       routes/
       schemas/

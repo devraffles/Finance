@@ -27,10 +27,9 @@
 ## Seguranca E Dados
 
 - Nunca commite chaves reais.
-- `.env.local` deve conter valores locais e placeholders seguros.
-- `.env` deve conter valores de Docker Compose com placeholders seguros.
+- `.env` deve conter valores locais seguros e tambem ser usado pelo Docker Compose.
 - `.env.example` deve documentar variaveis sem segredos reais.
-- `ANTHROPIC_API_KEY` deve ficar vazio por padrao.
+- `GOOGLE_GENERATIVE_AI_API_KEY` deve ficar vazio por padrao.
 - Dados seed podem ser realistas, mas devem ser ficticios.
 - CNPJ, emails e transacoes de seed nao devem representar dados reais de terceiros.
 - Use `pnpm` em todos os comandos de projeto.

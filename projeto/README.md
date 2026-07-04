@@ -43,4 +43,4 @@ pnpm run db:studio
 
 ## Seguranca
 
-Os arquivos de ambiente atuais usam valores locais ficticios. Substitua `BETTER_AUTH_SECRET`, `POSTGRES_PASSWORD` e demais valores sensiveis fora do controle de versao em ambientes reais.
+Use somente `.env` para execucao local e Docker Compose. O arquivo `.env.example` documenta placeholders seguros e deve permanecer versionado; `.env` fica ignorado pelo Git. Para recursos de IA, configure `GOOGLE_GENERATIVE_AI_API_KEY` no `.env`.

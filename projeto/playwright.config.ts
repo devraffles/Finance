@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const webServerURL = new URL("/api/contas", baseURL).toString();
 const webServerCommand =
   process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? "pnpm dev";
 
@@ -20,7 +21,7 @@ export default defineConfig({
   ],
   webServer: {
     command: webServerCommand,
-    url: baseURL,
+    url: webServerURL,
     reuseExistingServer: !process.env.CI,
   },
 });

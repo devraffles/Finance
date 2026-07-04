@@ -1,12 +1,12 @@
-import { getSession } from "@kwak-finance/backend/lib/auth";
-import { ShieldCheck } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ShieldCheck } from "lucide-react";
 
 import { LoginForm } from "@/components/auth/login-form";
+import { getOptionalSession } from "@/lib/server-session";
 
 export default async function LoginPage() {
-  const session = await getSession(new Headers(headers()));
+  const session = await getOptionalSession(new Headers(headers()));
 
   if (session?.user?.id) {
     redirect("/dashboard");

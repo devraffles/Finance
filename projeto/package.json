@@ -18,7 +18,7 @@
     "test": "pnpm --filter @kwak-finance/backend test && pnpm --filter frontend test",
     "test:backend": "pnpm --filter @kwak-finance/backend test",
     "test:frontend": "pnpm --filter frontend test",
-    "test:e2e": "playwright test",
+    "test:e2e": "tsx scripts/check-e2e-port.ts && playwright test",
     "test:coverage": "pnpm --filter @kwak-finance/backend run coverage && pnpm --filter frontend run coverage",
     "setup": "pnpm install && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
     "docker:up": "docker compose up --build",

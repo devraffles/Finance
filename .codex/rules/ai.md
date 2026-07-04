@@ -1,13 +1,13 @@
 # Integracao Com IA
 
-## Claude API
+## Gemini API
 
-- Wrapper unico em `backend/src/lib/claude.ts`.
+- Wrapper unico em `backend/src/lib/gemini.ts`.
 - Funcoes obrigatorias:
-  - `callClaude`
+  - `callGemini`
   - `categorizarTransacoes`
   - `gerarInsights`
-- `ANTHROPIC_API_KEY` deve vir de variavel de ambiente.
+- `GOOGLE_GENERATIVE_AI_API_KEY` deve vir de variavel de ambiente.
 - Se a chave estiver ausente, retorne erro controlado ou estado explicativo, sem quebrar o app inteiro.
 
 ## Dados Enviados Para IA

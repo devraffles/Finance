@@ -1,0 +1,44 @@
+import {
+  getAuthenticatedUserId,
+  jsonFromRequest,
+  respond,
+  unauthorized,
+} from "../../_lib/http";
+
+export const runtime = "nodejs";
+
+interface RouteContext {
+  params: {
+    id: string;
+  };
+}
+
+export const GET = async (request: Request, { params }: RouteContext) => {
+  const userId = await getAuthenticatedUserId(request);
+  if (!userId) return unauthorized();
+
+  const { obterTransacao } = await import("@kwak-finance/backend/services");
+  return respond(await obterTransacao({ userId, id: params.id }));
+};
+
+export const PUT = async (request: Request, { params }: RouteContext) => {
+  const userId = await getAuthenticatedUserId(request);
+  if (!userId) return unauthorized();
+
+  const { atualizarTransacao } = await import("@kwak-finance/backend/services");
+  return respond(
+    await atualizarTransacao({
+      userId,
+      id: params.id,
+      body: await jsonFromRequest(request),
+    }),
+  );
+};
+
+export const DELETE = async (request: Request, { params }: RouteContext) => {
+  const userId = await getAuthenticatedUserId(request);
+  if (!userId) return unauthorized();
+
+  const { removerTransacao } = await import("@kwak-finance/backend/services");
+  return respond(await removerTransacao({ userId, id: params.id }));
+};

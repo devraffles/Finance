@@ -7,8 +7,12 @@
   "exports": {
     ".": "./src/index.ts",
     "./lib/auth": "./src/lib/auth.ts",
+    "./lib/gemini": "./src/lib/gemini.ts",
     "./lib/prisma": "./src/lib/prisma.ts",
-    "./schemas/auth": "./src/schemas/auth.ts"
+    "./schemas": "./src/schemas/index.ts",
+    "./schemas/auth": "./src/schemas/auth.ts",
+    "./services": "./src/services/index.ts",
+    "./types/financas": "./src/types/financas.ts"
   },
   "scripts": {
     "test": "vitest run",
@@ -20,9 +24,12 @@
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.1",
+    "@ai-sdk/google": "^2.0.0",
     "@prisma/client": "^6.0.1",
+    "ai": "^5.0.0",
     "better-auth": "^1.6.11",
+    "cpf-cnpj-validator": "^2.1.2",
+    "dayjs": "^1.11.20",
     "zod": "^3.24.1"
   },
   "devDependencies": {

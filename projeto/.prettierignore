@@ -6,3 +6,5 @@ build
 coverage
 dev-server.log
 dev-server.err.log
+playwright-report
+test-results

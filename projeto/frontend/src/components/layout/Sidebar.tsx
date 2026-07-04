@@ -4,7 +4,6 @@ import {
   BarChart3,
   BriefcaseBusiness,
   CreditCard,
-  Flag,
   Landmark,
   LogOut,
   Menu,
@@ -13,6 +12,7 @@ import {
   Target,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -78,7 +78,15 @@ export const Sidebar = ({ user }: SidebarProps) => {
     <aside className="flex h-full w-[240px] flex-col border-r border-kwak-border bg-kwak-navy-900/96 text-kwak-ice-50 shadow-[16px_0_48px_rgba(0,5,66,0.26)]">
       <div className="flex h-16 items-center gap-3 border-b border-kwak-border px-5">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-kwak-blue-600">
-          <Flag aria-hidden="true" className="h-5 w-5 text-white" />
+          <Image
+            alt=""
+            aria-hidden="true"
+            className="h-6 w-6 object-contain"
+            height={24}
+            priority
+            src="/assets/Mini-Icon-White.webp"
+            width={24}
+          />
         </div>
         <div>
           <p className="font-heading text-base font-semibold">Kwak Finance</p>
@@ -101,6 +109,7 @@ export const Sidebar = ({ user }: SidebarProps) => {
 
                 return (
                   <Link
+                    aria-current={isActive ? "page" : undefined}
                     className={cn(
                       "flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-kwak-lavender-200 transition hover:bg-white/8 hover:text-kwak-ice-50",
                       isActive &&

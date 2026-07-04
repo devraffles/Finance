@@ -41,10 +41,10 @@ Tarefas:
 - Criar `projeto/.dockerignore`.
 - Criar `projeto/.env.example` com placeholders seguros.
 - Criar `projeto/.env` para Docker com `DATABASE_URL` apontando para `db:5432`.
-- Criar `projeto/.env.local` para execucao local com `DATABASE_URL` apontando para `localhost:5432`.
+- Usar somente `projeto/.env` para execucao local e Docker Compose; no Compose, sobrescrever `DATABASE_URL` do app para `db:5432`.
 - Instalar dependencias de runtime do prompt no workspace correto:
   - UI, charts, forms e cliente auth em `frontend`;
-  - Prisma, Better Auth server config, Zod, Claude SDK, Day.js e bibliotecas de dominio/validacao em `backend` quando forem server-side.
+  - Prisma, Better Auth server config, Zod, Vercel AI SDK com Gemini, Day.js e bibliotecas de dominio/validacao em `backend` quando forem server-side.
 - Instalar dependencias dev no workspace correto, mantendo Prettier, ESLint e TypeScript acessiveis pela raiz `projeto/`.
 - Adicionar Prettier e integracao ESLint na raiz:
   - `prettier`
@@ -86,7 +86,7 @@ Tarefas:
 - Inicializar Prisma com PostgreSQL em `projeto/backend/prisma/`.
 - Criar `projeto/backend/prisma/schema.prisma` com todos os modelos e enums do prompt.
 - Criar singleton Prisma em `projeto/backend/src/lib/prisma.ts`.
-- Garantir que `projeto/.env.local` contenha variaveis locais seguras e que o Prisma consiga ler o `DATABASE_URL`.
+- Garantir que `projeto/.env` contenha variaveis locais seguras e que o Prisma consiga ler o `DATABASE_URL`.
 - Criar `projeto/backend/prisma/seed.ts` com usuario, contas, empresa, transacoes, investimentos e metas.
 - Criar scripts Prisma:
   - `db:generate`
@@ -114,7 +114,7 @@ Tarefas:
 - Criar `projeto/backend/src/lib/auth.ts` com Better Auth, email/senha, Prisma adapter e validacao Zod de configuracao/credenciais.
 - Criar adapter Better Auth em `projeto/frontend/src/app/api/auth/[...all]/route.ts` importando apenas configuracao server-side do backend.
 - Criar `projeto/frontend/src/lib/utils.ts` com `cn`, formatadores e helpers financeiros sem dependencia de Prisma, IA ou segredos.
-- Criar `projeto/backend/src/lib/claude.ts` com wrapper e tratamento quando API key estiver ausente.
+- Criar `projeto/backend/src/lib/gemini.ts` com wrapper e tratamento quando API key estiver ausente.
 - Criar tipos de dominio em `projeto/backend/src/types/financas.ts`.
 - Criar contratos seguros para a UI em `projeto/frontend/src/types/financas.ts`, sem expor campos internos do banco.
 - Criar provider de sessao em `projeto/frontend/` quando necessario.
@@ -168,7 +168,7 @@ Aceite:
 
 - Toda rota protegida valida sessao.
 - Toda consulta filtra `userId`.
-- Nenhuma pagina ou componente visual importa Prisma, Claude SDK, variaveis secretas ou servicos de persistencia.
+- Nenhuma pagina ou componente visual importa Prisma, SDKs de IA, variaveis secretas ou servicos de persistencia.
 - Route handlers em `projeto/frontend/src/app/api/**` ficam finos e delegam regra de dominio para `projeto/backend/`.
 - Payloads invalidos retornam `400`.
 - Datas invalidas e documentos brasileiros invalidos retornam `400`.
@@ -215,13 +215,13 @@ Aceite:
 
 ## Fase 7 - IA E Insights
 
-Objetivo: integrar Claude sem fragilizar o app.
+Objetivo: integrar Gemini sem fragilizar o app.
 
 Tarefas:
 
 - Categorizar transacoes em lote.
 - Gerar insights a partir de dados agregados.
-- Tratar ausencia de `ANTHROPIC_API_KEY`.
+- Tratar ausencia de `GOOGLE_GENERATIVE_AI_API_KEY`.
 - Validar resposta da IA antes de persistir.
 
 Aceite:

@@ -17,12 +17,12 @@
 ## Variaveis De Ambiente
 
 - `.env` e usado pelo Docker Compose.
-- `.env.local` e usado apenas para execucao local fora do Docker.
-- `DATABASE_URL` no Docker deve apontar para `db:5432`.
-- `DATABASE_URL` local deve apontar para `localhost:5432`.
+- `.env` e usado para execucao local e Docker Compose.
+- `DATABASE_URL` local deve apontar para `localhost:5433` quando usar o PostgreSQL do Compose publicado na maquina.
+- No servico Docker do app, sobrescreva `DATABASE_URL` para apontar para `db:5432`.
 - Segredos reais nunca devem entrar em arquivos versionaveis.
 - `.env.example` deve listar todas as variaveis necessarias com placeholders seguros.
-- `ANTHROPIC_API_KEY` deve ficar vazio por padrao.
+- `GOOGLE_GENERATIVE_AI_API_KEY` deve ficar vazio por padrao.
 
 ## Scripts Obrigatorios
 

@@ -20,7 +20,7 @@ Stack alvo:
 - PostgreSQL com Prisma via Docker Compose
 - Tailwind CSS com componentes shadcn/ui como padrao preferido de UI
 - Better Auth com email e senha via Prisma/PostgreSQL
-- Claude API via `@anthropic-ai/sdk`
+- Gemini via Vercel AI SDK (`ai` e `@ai-sdk/google`)
 - Recharts, lucide-react, Day.js, Zod, react-hook-form
 - Bibliotecas especializadas para validacao de campos brasileiros quando aplicavel, por exemplo CPF/CNPJ
 - pnpm como package manager
@@ -110,6 +110,6 @@ O app so esta concluido quando:
 4. Login funciona com `admin@kwakfinance.local` / `admin123`.
 5. Dashboard exibe KPIs reais calculados a partir do seed.
 6. Importacao de CSV Nubank funciona.
-7. Categorizacao por IA retorna resultado quando `ANTHROPIC_API_KEY` esta configurada.
+7. Categorizacao por IA retorna resultado quando `GOOGLE_GENERATIVE_AI_API_KEY` esta configurada.
 8. Todos os modulos sao navegaveis sem erros de console.
 9. `pnpm run docker:reset` recria o volume PostgreSQL e reexecuta migration/seed.

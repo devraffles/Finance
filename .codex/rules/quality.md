@@ -48,7 +48,7 @@ O README final deve conter:
 - comandos uteis;
 - credenciais padrao;
 - modulos disponiveis;
-- observacao sobre `ANTHROPIC_API_KEY`;
+- observacao sobre `GOOGLE_GENERATIVE_AI_API_KEY`;
 - instrucao para reset do banco.
 
 ## ESLint E Prettier
