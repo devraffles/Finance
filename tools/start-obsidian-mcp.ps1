@@ -26,4 +26,6 @@ if (-not $env:OBSIDIAN_PORT) {
   $env:OBSIDIAN_PORT = "27124"
 }
 
-uvx mcp-obsidian
+# mcp-obsidian 0.2.x usa a API do SDK MCP 1.x. Sem este limite, o uv resolve
+# o SDK 2.x, cuja API removeu os decorators usados pelo servidor.
+uvx --with "mcp<2" mcp-obsidian
