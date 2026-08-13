@@ -1,5 +1,11 @@
 import { type ClassValue, clsx } from "clsx";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
+
+import type { TransacaoBrutaCsv } from "@/types/financas";
+
+dayjs.extend(customParseFormat);
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -13,17 +19,13 @@ export const formatCurrency = (value: number) => {
 };
 
 export const formatDate = (date: Date | string) => {
-  const parsedDate = typeof date === "string" ? new Date(date) : date;
+  const parsedDate = dayjs(date);
 
-  if (Number.isNaN(parsedDate.getTime())) {
+  if (!parsedDate.isValid()) {
     return "Data invalida";
   }
 
-  const day = String(parsedDate.getDate()).padStart(2, "0");
-  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
-  const year = parsedDate.getFullYear();
-
-  return `${day}/${month}/${year}`;
+  return parsedDate.format("DD/MM/YYYY");
 };
 
 export const formatPercent = (value: number, digits = 1) => {
@@ -71,4 +73,109 @@ export const slugify = (str: string) => {
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+};
+
+const normalizeCsvHeader = (value: string) => slugify(value).replace(/-/g, "");
+
+const splitCsvLine = (line: string, delimiter: string) => {
+  const values: string[] = [];
+  let currentValue = "";
+  let insideQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    const nextCharacter = line[index + 1];
+
+    if (character === '"' && insideQuotes && nextCharacter === '"') {
+      currentValue += '"';
+      index += 1;
+      continue;
+    }
+
+    if (character === '"') {
+      insideQuotes = !insideQuotes;
+      continue;
+    }
+
+    if (character === delimiter && !insideQuotes) {
+      values.push(currentValue.trim());
+      currentValue = "";
+      continue;
+    }
+
+    currentValue += character;
+  }
+
+  values.push(currentValue.trim());
+  return values;
+};
+
+const parseCsvAmount = (value: string) => {
+  const normalized = value
+    .trim()
+    .replace(/R\$\s?/g, "")
+    .replace(/\./g, "")
+    .replace(",", ".");
+  const amount = Number(normalized);
+
+  return Number.isFinite(amount) ? amount : null;
+};
+
+const parseCsvDate = (value: string) => {
+  const parsed = dayjs(value.trim(), ["DD/MM/YYYY", "YYYY-MM-DD"], true);
+
+  return parsed.isValid() ? parsed.format("YYYY-MM-DD") : null;
+};
+
+export const parseCSVNubank = (csvText: string): TransacaoBrutaCsv[] => {
+  const lines = csvText
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length < 2) {
+    return [];
+  }
+
+  const delimiter = lines[0].includes(";") ? ";" : ",";
+  const headers = splitCsvLine(lines[0], delimiter).map(normalizeCsvHeader);
+  const dateIndex = headers.findIndex((header) =>
+    ["data", "date"].includes(header),
+  );
+  const descriptionIndex = headers.findIndex((header) =>
+    ["titulo", "title", "descricao", "description"].includes(header),
+  );
+  const amountIndex = headers.findIndex((header) =>
+    ["valor", "amount"].includes(header),
+  );
+  const categoryIndex = headers.findIndex((header) =>
+    ["categoria", "category"].includes(header),
+  );
+
+  if (dateIndex < 0 || descriptionIndex < 0 || amountIndex < 0) {
+    return [];
+  }
+
+  return lines.slice(1).reduce<TransacaoBrutaCsv[]>((transactions, line) => {
+    const values = splitCsvLine(line, delimiter);
+    const data = parseCsvDate(values[dateIndex] ?? "");
+    const descricao = values[descriptionIndex]?.trim();
+    const valor = parseCsvAmount(values[amountIndex] ?? "");
+    const categoria =
+      categoryIndex >= 0 ? values[categoryIndex]?.trim() : undefined;
+
+    if (!data || !descricao || valor === null) {
+      return transactions;
+    }
+
+    transactions.push({
+      data,
+      descricao,
+      valor,
+      ...(categoria ? { categoria } : {}),
+    });
+
+    return transactions;
+  }, []);
 };

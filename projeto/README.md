@@ -4,21 +4,24 @@ Aplicacao web local para gestao financeira integrada de PF, PJ/MEI e investiment
 
 ## Estado atual
 
-Fundacao criada ate a Task 02:
+As Fases 0 a 4 estao implementadas e estabilizadas para execucao via Docker:
 
-- workspace pnpm em `projeto/`;
-- frontend Next.js 14 em `frontend/`, com App Router, TypeScript, Tailwind CSS e ESLint;
-- backend interno `@kwak-finance/backend` em `backend/`, com TypeScript e Prisma;
-- Prisma inicializado em `backend/prisma/schema.prisma` com provider `postgresql`;
-- Docker Compose dedicado `kwak-finance` com containeres `kwak_finance_app` e `kwak_finance_db`;
-- Dockerfile com Node 24 Alpine e pnpm via Corepack;
-- arquivos `.env` e `.env.example` com placeholders seguros.
+- workspace pnpm em `projeto/`, frontend Next.js 14 e backend interno `@kwak-finance/backend`;
+- PostgreSQL com Prisma, migration e seed idempotente com credenciais de desenvolvimento;
+- autenticacao Better Auth por e-mail e senha, layout protegido e navegacao base;
+- APIs protegidas para contas, transacoes, importacao CSV, IA, investimentos, metas, empresas e dashboard;
+- Docker Compose dedicado `kwak-finance`, com os containeres `kwak_finance_app` e `kwak_finance_db`;
+- Dockerfile com Node 20 Alpine, Corepack e pnpm.
 
-## Pre-requisitos verificados
+Dashboard com dados reais/graficos e os modulos operacionais visuais permanecem nas Fases 5 e 6.
 
-- Docker disponivel.
-- Docker Compose disponivel.
-- pnpm disponivel.
+## Execucao recomendada
+
+1. Copie `.env.example` para `.env` e ajuste apenas valores locais, se necessario.
+2. Execute `pnpm run docker:up` dentro de `projeto/`.
+3. Acesse `http://localhost:3000` e entre com `admin@kwakfinance.local` / `admin123`.
+
+Para encerrar os servicos sem apagar dados, use `pnpm run docker:down`. O comando `pnpm run docker:reset` apaga o volume do PostgreSQL e recria migrations e seed.
 
 ## Comandos principais
 

@@ -5,7 +5,10 @@ const serverPackages = [
   "better-auth",
 ];
 
+const isDockerBuild = process.env.KWAK_DOCKER_BUILD === "true";
+
 const nextConfig = {
+  output: isDockerBuild ? "standalone" : undefined,
   experimental: {
     serverComponentsExternalPackages: serverPackages,
   },

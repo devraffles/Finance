@@ -1,10 +1,12 @@
-FROM node:24-alpine AS base
+FROM node:20-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 RUN corepack enable
 
 FROM base AS deps
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY backend/package.json ./backend/package.json
+COPY frontend/package.json ./frontend/package.json
 RUN if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; else pnpm install; fi
 
 FROM base AS development
@@ -18,8 +20,9 @@ ENV NEXT_TELEMETRY_DISABLED 1
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm exec prisma generate --schema backend/prisma/schema.prisma
+RUN pnpm --filter @kwak-finance/backend exec prisma generate --schema prisma/schema.prisma
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV KWAK_DOCKER_BUILD true
 RUN pnpm run build
 
 FROM base AS production

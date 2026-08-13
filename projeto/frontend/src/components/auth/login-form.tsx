@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, EyeOff, Loader2, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -70,18 +70,16 @@ export const LoginForm = () => {
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-2">
-        <Label htmlFor="email">E-mail</Label>
+      <div className="space-y-2.5">
+        <Label className="sr-only" htmlFor="email">
+          E-mail
+        </Label>
         <div className="relative">
-          <Mail
-            aria-hidden="true"
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-kwak-lavender-400"
-          />
           <Input
             autoComplete="email"
-            className="pl-10"
+            className="h-13 border-transparent bg-[#5c637a] px-4 text-base text-white shadow-none placeholder:text-[#f2f3f7] focus:border-kwak-blue-500 focus:bg-[#636b83] focus:ring-2 focus:ring-kwak-blue-500/35"
             id="email"
-            placeholder="admin@kwakfinance.local"
+            placeholder="E-mail"
             type="email"
             {...register("email")}
           />
@@ -91,24 +89,22 @@ export const LoginForm = () => {
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Senha</Label>
+      <div className="space-y-2.5">
+        <Label className="sr-only" htmlFor="password">
+          Senha
+        </Label>
         <div className="relative">
-          <LockKeyhole
-            aria-hidden="true"
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-kwak-lavender-400"
-          />
           <Input
             autoComplete="current-password"
-            className="px-10"
+            className="h-13 border-transparent bg-[#5c637a] px-4 pr-12 text-base text-white shadow-none placeholder:text-[#f2f3f7] focus:border-kwak-blue-500 focus:bg-[#636b83] focus:ring-2 focus:ring-kwak-blue-500/35"
             id="password"
-            placeholder="Digite sua senha"
+            placeholder="Senha"
             type={showPassword ? "text" : "password"}
             {...register("password")}
           />
           <Button
             aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-            className="absolute right-1 top-1/2 -translate-y-1/2"
+            className="absolute right-1 top-1/2 -translate-y-1/2 text-[#0d3195] hover:bg-white/10 hover:text-[#1f58db]"
             onClick={() => setShowPassword((current) => !current)}
             size="icon"
             type="button"
@@ -126,7 +122,19 @@ export const LoginForm = () => {
         ) : null}
       </div>
 
-      <Button className="w-full" disabled={isSubmitting} type="submit">
+      <label className="flex cursor-pointer items-center gap-2.5 pt-0.5 text-sm text-[#f4f4f7]">
+        <input
+          className="h-4 w-4 rounded border-0 bg-[#5c637a] accent-kwak-blue-600 focus:ring-2 focus:ring-kwak-blue-500/50"
+          type="checkbox"
+        />
+        Manter conectado
+      </label>
+
+      <Button
+        className="mt-8 h-13 w-full rounded-lg bg-[#2146b9] text-base shadow-none hover:bg-[#2a55d3]"
+        disabled={isSubmitting}
+        type="submit"
+      >
         {isSubmitting ? (
           <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
         ) : null}

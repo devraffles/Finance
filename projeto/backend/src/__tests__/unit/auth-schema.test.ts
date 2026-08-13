@@ -23,10 +23,28 @@ describe("credentialsSchema", () => {
 });
 
 describe("authEnvSchema", () => {
+  it("deve aceitar a configuracao minima valida", () => {
+    const result = authEnvSchema.safeParse({
+      BETTER_AUTH_SECRET: "a".repeat(32),
+      BETTER_AUTH_URL: "http://localhost:3000",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
   it("deve exigir secret com tamanho minimo", () => {
     const result = authEnvSchema.safeParse({
       BETTER_AUTH_SECRET: "curto",
       BETTER_AUTH_URL: "http://localhost:3000",
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("deve rejeitar URL de autenticacao invalida", () => {
+    const result = authEnvSchema.safeParse({
+      BETTER_AUTH_SECRET: "a".repeat(32),
+      BETTER_AUTH_URL: "kwak-finance.local",
     });
 
     expect(result.success).toBe(false);

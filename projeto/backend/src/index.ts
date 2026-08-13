@@ -7,6 +7,7 @@ export { authEnvSchema, credentialsSchema } from "./schemas/auth";
 export type { AuthEnv, CredentialsInput } from "./schemas/auth";
 export type {
   CategorizacaoResult,
+  ContaComSaldo,
   DadosFinanceiros,
   DashboardResumo,
   FiltrosTransacao,

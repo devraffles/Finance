@@ -38,7 +38,7 @@ importers:
         specifier: ^2.0.0
         version: 2.0.74(zod@3.25.76)
       "@prisma/client":
-        specifier: ^6.0.1
+        specifier: ^6.19.3
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
       ai:
         specifier: ^5.0.0
@@ -122,6 +122,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.2.1
+      dayjs:
+        specifier: ^1.11.20
+        version: 1.11.20
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
