@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum TipoConta {
@@ -71,8 +70,40 @@ model User {
   aportes       Aporte[]
   metas         Meta[]
   empresas      Empresa[]
+  configuracao  ConfiguracaoUsuario?
+  categorias    Categoria[]
 
   @@map("users")
+}
+
+model ConfiguracaoUsuario {
+  id              String   @id @default(cuid())
+  moeda           String   @default("BRL")
+  perfilPadrao    PerfilConta @default(PF) @map("perfil_padrao")
+  notificacoes    Boolean  @default(true)
+  userId          String   @unique @map("user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("configuracoes_usuario")
+}
+
+model Categoria {
+  id           String   @id @default(cuid())
+  nome         String
+  subcategoria String?
+  cor          String   @default("#38BDF8")
+  ordem        Int      @default(0)
+  ativa        Boolean  @default(true)
+  userId       String   @map("user_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, nome, subcategoria])
+  @@index([userId, ordem])
+  @@map("categorias")
 }
 
 model Session {

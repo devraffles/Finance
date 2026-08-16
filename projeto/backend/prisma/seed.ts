@@ -1,4 +1,5 @@
 import { hashPassword } from "better-auth/crypto";
+import { PrismaPg } from "@prisma/adapter-pg";
 import {
   PerfilConta,
   PrismaClient,
@@ -8,8 +9,16 @@ import {
   TipoInvest,
   TipoTransacao,
 } from "@prisma/client";
+import { Pool } from "pg";
 
-const prisma = new PrismaClient();
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL deve estar configurada para executar o seed.");
+}
+
+const pool = new Pool({ connectionString: databaseUrl });
+const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 
 const seedUserId = "seed_admin_user";
 const credentialAccountId = "seed_admin_credential_account";
@@ -646,4 +655,5 @@ void seed()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });
