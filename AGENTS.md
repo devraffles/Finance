@@ -16,14 +16,15 @@ Nome oficial do produto: **Kwak Finance**. Use este nome em interface, README, d
 
 Stack alvo:
 
-- Next.js 14 com App Router e TypeScript
-- PostgreSQL com Prisma via Docker Compose
-- Tailwind CSS com componentes shadcn/ui como padrao preferido de UI
-- Better Auth com email e senha via Prisma/PostgreSQL
-- Gemini via Vercel AI SDK (`ai` e `@ai-sdk/google`)
+- Node.js 24 LTS e pnpm 11
+- Next.js 16 com App Router, React 19 e TypeScript 5.9+
+- PostgreSQL 16 com Prisma ORM 7 via Docker Compose
+- Tailwind CSS 4 com componentes shadcn/ui como padrao preferido de UI
+- Better Auth 1.6+ com email e senha via Prisma/PostgreSQL
+- Gemini via Vercel AI SDK 7 (`ai` e `@ai-sdk/google`)
 - Recharts, lucide-react, Day.js, Zod, react-hook-form
 - Bibliotecas especializadas para validacao de campos brasileiros quando aplicavel, por exemplo CPF/CNPJ
-- pnpm como package manager
+- pnpm 11 como package manager
 - ESLint com Prettier
 
 ## Regra De Ordem

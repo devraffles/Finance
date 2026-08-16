@@ -10,7 +10,7 @@
 - Volumes, redes e nomes persistentes devem usar prefixo `kwak_finance_`.
 - O servico `db` deve usar `postgres:16-alpine`.
 - O servico `db` deve ter volume nomeado para persistencia e `healthcheck` com `pg_isready`.
-- O servico `app` deve usar imagem base `node:20-alpine` no `Dockerfile`.
+- O servico `app` deve usar imagem base `node:24-alpine` no `Dockerfile`.
 - O `Dockerfile` deve habilitar Corepack e instalar dependencias com pnpm.
 - O app deve expor `HOSTNAME=0.0.0.0` e porta `3000`.
 
