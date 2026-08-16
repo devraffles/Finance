@@ -1,9 +1,10 @@
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+import { ResourceList } from "@/components/layout/resource-list";
 
 export default function MetasPage() {
   return (
-    <ModulePlaceholder
-      description="Metas financeiras pessoais e empresariais serao gerenciadas aqui."
+    <ResourceList
+      description="Acompanhe a evolucao das suas metas financeiras."
+      endpoint="/api/metas"
       title="Metas"
     />
   );

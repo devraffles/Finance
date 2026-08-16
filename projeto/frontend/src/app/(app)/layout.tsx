@@ -11,7 +11,7 @@ interface AppLayoutProps {
 }
 
 export default async function AppLayout({ children }: AppLayoutProps) {
-  const session = await getOptionalSession(new Headers(headers()));
+  const session = await getOptionalSession(new Headers(await headers()));
 
   if (!session?.user?.id) {
     redirect("/login");

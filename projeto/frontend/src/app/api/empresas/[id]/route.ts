@@ -8,20 +8,22 @@ import {
 export const runtime = "nodejs";
 
 interface RouteContext {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const GET = async (request: Request, { params }: RouteContext) => {
+  const { id } = await params;
   const userId = await getAuthenticatedUserId(request);
   if (!userId) return unauthorized();
 
   const { obterEmpresa } = await import("@kwak-finance/backend/services");
-  return respond(await obterEmpresa({ userId, id: params.id }));
+  return respond(await obterEmpresa({ userId, id }));
 };
 
 export const PUT = async (request: Request, { params }: RouteContext) => {
+  const { id } = await params;
   const userId = await getAuthenticatedUserId(request);
   if (!userId) return unauthorized();
 
@@ -29,16 +31,17 @@ export const PUT = async (request: Request, { params }: RouteContext) => {
   return respond(
     await atualizarEmpresa({
       userId,
-      id: params.id,
+      id,
       body: await jsonFromRequest(request),
     }),
   );
 };
 
 export const DELETE = async (request: Request, { params }: RouteContext) => {
+  const { id } = await params;
   const userId = await getAuthenticatedUserId(request);
   if (!userId) return unauthorized();
 
   const { removerEmpresa } = await import("@kwak-finance/backend/services");
-  return respond(await removerEmpresa({ userId, id: params.id }));
+  return respond(await removerEmpresa({ userId, id }));
 };

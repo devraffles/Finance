@@ -8,20 +8,22 @@ import {
 export const runtime = "nodejs";
 
 interface RouteContext {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const GET = async (request: Request, { params }: RouteContext) => {
+  const { id } = await params;
   const userId = await getAuthenticatedUserId(request);
   if (!userId) return unauthorized();
 
   const { listarAportes } = await import("@kwak-finance/backend/services");
-  return respond(await listarAportes({ userId, id: params.id }));
+  return respond(await listarAportes({ userId, id }));
 };
 
 export const POST = async (request: Request, { params }: RouteContext) => {
+  const { id } = await params;
   const userId = await getAuthenticatedUserId(request);
   if (!userId) return unauthorized();
 
@@ -29,7 +31,7 @@ export const POST = async (request: Request, { params }: RouteContext) => {
   return respond(
     await criarAporte({
       userId,
-      id: params.id,
+      id,
       body: await jsonFromRequest(request),
     }),
   );

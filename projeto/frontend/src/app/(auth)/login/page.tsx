@@ -6,7 +6,7 @@ import { LoginForm } from "@/components/auth/login-form";
 import { getOptionalSession } from "@/lib/server-session";
 
 export default async function LoginPage() {
-  const session = await getOptionalSession(new Headers(headers()));
+  const session = await getOptionalSession(new Headers(await headers()));
 
   if (session?.user?.id) {
     redirect("/dashboard");

@@ -1,9 +1,10 @@
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+import { ResourceList } from "@/components/layout/resource-list";
 
 export default function EmpresarialPage() {
   return (
-    <ModulePlaceholder
-      description="Indicadores PJ, empresa vinculada e receitas previstas serao exibidos neste painel."
+    <ResourceList
+      description="Empresas cadastradas para o seu perfil."
+      endpoint="/api/empresas"
       title="Painel Empresarial"
     />
   );

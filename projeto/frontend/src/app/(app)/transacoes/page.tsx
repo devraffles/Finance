@@ -1,9 +1,10 @@
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+import { ResourceList } from "@/components/layout/resource-list";
 
 export default function TransacoesPage() {
   return (
-    <ModulePlaceholder
-      description="Fluxos de transacoes, filtros e importacao CSV serao adicionados sobre esta rota protegida."
+    <ResourceList
+      description="Lancamentos recentes do perfil autenticado."
+      endpoint="/api/transacoes"
       title="Transacoes"
     />
   );

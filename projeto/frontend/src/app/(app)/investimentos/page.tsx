@@ -1,9 +1,10 @@
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+import { ResourceList } from "@/components/layout/resource-list";
 
 export default function InvestimentosPage() {
   return (
-    <ModulePlaceholder
-      description="Carteira, aportes, alocacao e rentabilidade serao conectados ao backend nesta area."
+    <ResourceList
+      description="Posicoes e rentabilidade da carteira."
+      endpoint="/api/investimentos"
       title="Investimentos"
     />
   );
