@@ -13,7 +13,10 @@ import { failure, success } from "./api-result";
 import {
   aporteCreateSchema,
   categorizarIaSchema,
+  categoriaCreateSchema,
+  categoriaUpdateSchema,
   contaCreateSchema,
+  configuracaoUpdateSchema,
   contaUpdateSchema,
   empresaCreateSchema,
   empresaUpdateSchema,
@@ -477,6 +480,10 @@ export const categorizarTransacoesIa = async ({ userId, body }: BodyParams) => {
       })),
     );
 
+    if (!input.confirmar) {
+      return success(resultado, 200, { confirmado: false });
+    }
+
     for (const item of resultado) {
       const transacaoId =
         item.transacaoId ??
@@ -497,7 +504,7 @@ export const categorizarTransacoesIa = async ({ userId, body }: BodyParams) => {
       });
     }
 
-    return success(resultado);
+    return success(resultado, 200, { confirmado: true });
   } catch (error) {
     if (error instanceof Error && error.message === GEMINI_API_KEY_ERROR) {
       return failure({
@@ -794,6 +801,107 @@ export const removerEmpresa = async ({ userId, id }: IdParams) => {
   if (!current) return notFound();
 
   await prisma.empresa.delete({ where: { id } });
+  return success({ id });
+};
+
+export const obterConfiguracao = async ({ userId }: UserParams) => {
+  const [user, configuracao, categorias] = await Promise.all([
+    prisma.user.findFirst({
+      where: { id: userId },
+      select: { name: true, email: true },
+    }),
+    prisma.configuracaoUsuario.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    }),
+    prisma.categoria.findMany({
+      where: { userId },
+      orderBy: [{ ordem: "asc" }, { nome: "asc" }],
+    }),
+  ]);
+
+  if (!user) return notFound("Usuario nao encontrado.");
+
+  return success({
+    perfil: user,
+    preferencias: {
+      moeda: configuracao.moeda,
+      perfilPadrao: configuracao.perfilPadrao,
+      notificacoes: configuracao.notificacoes,
+    },
+    categorias,
+    iaConfigurada: Boolean(process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim()),
+  });
+};
+
+export const atualizarConfiguracao = async ({ userId, body }: BodyParams) => {
+  const input = parse(configuracaoUpdateSchema, body);
+  if (isApiResult(input)) return input;
+
+  const { nome, ...preferencias } = input;
+  const [user, configuracao] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: nome ? { name: nome } : {},
+      select: { name: true, email: true },
+    }),
+    prisma.configuracaoUsuario.upsert({
+      where: { userId },
+      create: { userId, ...preferencias },
+      update: preferencias,
+    }),
+  ]);
+
+  return success({
+    perfil: user,
+    preferencias: {
+      moeda: configuracao.moeda,
+      perfilPadrao: configuracao.perfilPadrao,
+      notificacoes: configuracao.notificacoes,
+    },
+  });
+};
+
+export const criarCategoria = async ({ userId, body }: BodyParams) => {
+  const input = parse(categoriaCreateSchema, body);
+  if (isApiResult(input)) return input;
+
+  try {
+    return success(
+      await prisma.categoria.create({ data: { ...input, userId } }),
+      201,
+    );
+  } catch (error) {
+    return unexpected(error);
+  }
+};
+
+export const atualizarCategoria = async ({
+  userId,
+  id,
+  body,
+}: BodyIdParams) => {
+  const input = parse(categoriaUpdateSchema, body);
+  if (isApiResult(input)) return input;
+
+  const categoria = await prisma.categoria.findFirst({ where: { id, userId } });
+  if (!categoria) return notFound();
+
+  try {
+    return success(
+      await prisma.categoria.update({ where: { id }, data: input }),
+    );
+  } catch (error) {
+    return unexpected(error);
+  }
+};
+
+export const removerCategoria = async ({ userId, id }: IdParams) => {
+  const categoria = await prisma.categoria.findFirst({ where: { id, userId } });
+  if (!categoria) return notFound();
+
+  await prisma.categoria.delete({ where: { id } });
   return success({ id });
 };
 

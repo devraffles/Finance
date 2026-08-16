@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { empresaCreateSchema, transacaoFiltersSchema } from "../../schemas/api";
+import {
+  categorizarIaSchema,
+  empresaCreateSchema,
+  transacaoFiltersSchema,
+} from "../../schemas/api";
 
 describe("schemas de API", () => {
   it("rejeita datas invalidas em filtros de transacoes", () => {
@@ -28,5 +32,12 @@ describe("schemas de API", () => {
     expect(valid.success).toBe(true);
     expect(valid.success ? valid.data.cnpj : "").toBe("11222333000181");
     expect(invalid.success).toBe(false);
+  });
+
+  it("exige confirmacao explicita antes de aplicar categorizacao por IA", () => {
+    const result = categorizarIaSchema.safeParse({ ids: ["cm1234567890"] });
+
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.confirmar).toBe(false);
   });
 });

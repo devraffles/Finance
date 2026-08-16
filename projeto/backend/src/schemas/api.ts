@@ -83,6 +83,7 @@ export const importCsvSchema = z.object({
 
 export const categorizarIaSchema = z.object({
   ids: z.array(idSchema).min(1).max(100),
+  confirmar: z.boolean().default(false),
 });
 
 export const investimentoCreateSchema = z.object({
@@ -133,6 +134,23 @@ export const empresaCreateSchema = z.object({
 });
 
 export const empresaUpdateSchema = empresaCreateSchema.partial();
+
+export const configuracaoUpdateSchema = z.object({
+  moeda: z.literal("BRL").optional(),
+  perfilPadrao: perfilContaSchema.optional(),
+  notificacoes: z.boolean().optional(),
+  nome: z.string().trim().min(2).optional(),
+});
+
+export const categoriaCreateSchema = z.object({
+  nome: z.string().trim().min(2),
+  subcategoria: optionalTextSchema,
+  cor: z.string().trim().min(3).default("#38BDF8"),
+  ordem: z.number().int().min(0).default(0),
+  ativa: z.boolean().default(true),
+});
+
+export const categoriaUpdateSchema = categoriaCreateSchema.partial();
 
 export const periodoSchema = z
   .object({
