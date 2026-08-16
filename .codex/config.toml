@@ -10,12 +10,6 @@ args = ["-y", "@upstash/context7-mcp"]
 enabled = true
 startup_timeout_sec = 40
 
-[mcp_servers.perplexity]
-command = "npx"
-args = ["-y", "@perplexity-ai/mcp-server"]
-enabled = true
-startup_timeout_sec = 30
-
 [mcp_servers.obsidian]
 command = "powershell"
 args = ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "tools/start-obsidian-mcp.ps1"]
