@@ -1,10 +1,5 @@
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+import { ContasContent } from "@/components/contas/contas-content";
 
 export default function ContasPage() {
-  return (
-    <ModulePlaceholder
-      description="Listagem e manutencao de contas serao conectadas aos endpoints de dominio nas proximas tarefas."
-      title="Contas"
-    />
-  );
+  return <ContasContent />;
 }
