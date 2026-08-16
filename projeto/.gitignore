@@ -1,5 +1,7 @@
 node_modules
 .next
+playwright-report
+test-results
 frontend/.next
 dev-server.log
 dev-server.err.log
