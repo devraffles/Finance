@@ -172,7 +172,7 @@ export const Sidebar = ({ user }: SidebarProps) => {
       {isOpen ? (
         <div className="fixed inset-0 z-50 md:hidden">
           <button
-            aria-label="Fechar menu"
+            aria-label="Fechar menu ao clicar fora"
             className="absolute inset-0 bg-black/58"
             onClick={() => setIsOpen(false)}
             type="button"
