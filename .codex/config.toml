@@ -16,3 +16,9 @@ args = ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "tools/start-obsidi
 enabled = true
 startup_timeout_sec = 30
 
+[mcp_servers.graphify]
+command = "powershell"
+args = ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "tools/start-graphify-mcp.ps1"]
+enabled = true
+startup_timeout_sec = 60
+

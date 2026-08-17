@@ -23,3 +23,6 @@ projeto/dev-server.err.log
 /.obsidian/
 /.serena/
 /app/
+
+# Grafo local gerado pelo Graphify (regenerar com: uvx --from graphifyy graphify . --code-only)
+/graphify-out/
