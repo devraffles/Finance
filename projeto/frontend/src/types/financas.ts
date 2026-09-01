@@ -25,13 +25,6 @@ export interface TransacaoResumoUI {
   contaNome: string;
 }
 
-export interface TransacaoBrutaCsv {
-  descricao: string;
-  valor: number;
-  data: string;
-  categoria?: string;
-}
-
 export interface InsightUI {
   id: string;
   titulo: string;

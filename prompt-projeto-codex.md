@@ -50,7 +50,6 @@ projeto/
 ├── docker-compose.override.yml   # overrides de dev (hot reload, volumes)
 ├── Dockerfile
 ├── .env                          # variáveis para docker compose
-├── .env.local                    # variáveis para Next.js (gerado pelo setup)
 ├── .dockerignore
 ├── AGENTS.md
 ├── README.md
@@ -189,7 +188,6 @@ node_modules
 .next
 .git
 *.log
-.env.local
 dist
 coverage
 ```
@@ -213,7 +211,7 @@ SEED_USER_PASSWORD="admin123"
 SEED_USER_NAME="Administrador"
 ```
 
-> **Nota:** `.env.local` é para desenvolvimento local fora do Docker. O `.env` é usado pelo Docker Compose. Ambos devem conter as mesmas variáveis (exceto `DATABASE_URL`, que aponta para `localhost:5432` no `.env.local` e para `db:5432` no `.env`).
+> **Nota:** `.env` é o único arquivo de ambiente para desenvolvimento local e Docker Compose. Localmente, `DATABASE_URL` aponta para `localhost:5433`; o Compose sobrescreve apenas a URL da aplicação para usar `db:5432`.
 
 ---
 
@@ -309,7 +307,7 @@ pnpm exec prisma migrate dev --name init --skip-seed
 
 **`backend/prisma/seed.ts`** — dados realistas para um MEI brasileiro:
 
-- **Usuário:** credenciais do `.env` / `.env.local`
+- **Usuário:** credenciais do `.env`
 - **Contas (4):**
   - Nubank Conta (PF, CORRENTE, ~R$ 4.200)
   - Nubank Cartão (PF, CARTAO, ~R$ -1.800)
@@ -697,8 +695,7 @@ pnpm run docker:up
 
 ```bash
 # Requer: Node 20+, PostgreSQL 15+ rodando localmente
-cp .env .env.local
-# Editar .env.local: DATABASE_URL deve apontar para localhost:5432
+# Configure DATABASE_URL no .env para apontar para localhost:5433
 pnpm install
 pnpm exec prisma migrate dev --name init
 pnpm run db:seed

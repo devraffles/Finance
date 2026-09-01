@@ -10,6 +10,7 @@ import {
 import { prisma } from "../lib/prisma";
 import type { ApiResult } from "./api-result";
 import { failure, success } from "./api-result";
+import { parseCsvNubank } from "./nubank-csv";
 import {
   aporteCreateSchema,
   categorizarIaSchema,
@@ -415,16 +416,31 @@ export const importarCsvTransacoes = async ({ userId, body }: BodyParams) => {
   const conta = await ensureConta({ userId, contaId: input.contaId });
   if (!conta) return notFound("Conta nao encontrada.");
 
+  const transacoes = parseCsvNubank(input.csv);
+  if (transacoes.length === 0) {
+    return failure({
+      code: "VALIDATION_ERROR",
+      message: "O CSV Nubank nao contem transacoes validas.",
+      status: 400,
+    });
+  }
+
   let importadas = 0;
   let duplicadas = 0;
 
-  for (const transacao of input.transacoes) {
+  for (const transacao of transacoes) {
+    const data = dayjs(transacao.data)
+      .hour(12)
+      .minute(0)
+      .second(0)
+      .millisecond(0)
+      .toDate();
     const duplicate = await prisma.transacao.findFirst({
       where: {
         userId,
         descricao: transacao.descricao,
         valor: transacao.valor,
-        data: transacao.data,
+        data,
       },
       select: { id: true },
     });
@@ -441,8 +457,8 @@ export const importarCsvTransacoes = async ({ userId, body }: BodyParams) => {
         tipo:
           transacao.valor >= 0 ? TipoTransacao.RECEITA : TipoTransacao.DESPESA,
         categoria: transacao.categoria ?? "Importado",
-        data: transacao.data,
-        competencia: competenciaFromDate(transacao.data),
+        data,
+        competencia: competenciaFromDate(data),
         contaId: input.contaId,
         perfil: input.perfil,
         tags: serializeTags(["csv", "nubank"]),

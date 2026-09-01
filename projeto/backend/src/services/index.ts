@@ -5,6 +5,7 @@ export type {
   ApiSuccessBody,
 } from "./api-result";
 export { failure, success } from "./api-result";
+export { parseCsvNubank } from "./nubank-csv";
 export {
   atualizarConta,
   atualizarEmpresa,

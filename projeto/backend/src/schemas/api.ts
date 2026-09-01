@@ -67,16 +67,8 @@ export const transacaoCreateSchema = z.object({
 
 export const transacaoUpdateSchema = transacaoCreateSchema.partial();
 
-export const transacaoBrutaSchema = z.object({
-  descricao: z.string().trim().min(1),
-  valor: moneySchema,
-  data: dateInputSchema,
-  categoria: z.string().trim().min(1).optional(),
-  conta: z.string().trim().min(1).optional(),
-});
-
 export const importCsvSchema = z.object({
-  transacoes: z.array(transacaoBrutaSchema).min(1),
+  csv: z.string().trim().min(1, "Arquivo CSV obrigatorio."),
   contaId: idSchema,
   perfil: perfilContaSchema.default("PF"),
 });

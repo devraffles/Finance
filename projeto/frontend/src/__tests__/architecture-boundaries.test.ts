@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const frontendSrc = join(process.cwd(), "src");
 
-const forbiddenImports = [
+const forbiddenModules = [
   "@prisma/client",
   "@anthropic-ai/sdk",
   "@ai-sdk/google",
@@ -50,12 +50,21 @@ const hasForbiddenBackendImport = (filePath: string, content: string) => {
   );
 };
 
+const importsModule = (content: string, moduleName: string) => {
+  const escapedModuleName = moduleName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const staticImport = new RegExp(
+    `(?:from|import)\\s*[(']\\s*["']${escapedModuleName}["']`,
+  );
+
+  return staticImport.test(content);
+};
+
 describe("fronteira frontend/backend", () => {
   it("impede SDKs server-side e servicos de dominio no frontend", () => {
     const violations = listSourceFiles(frontendSrc).flatMap((filePath) => {
       const content = readFileSync(filePath, "utf8");
-      const directViolations = forbiddenImports.filter((forbiddenImport) => {
-        return new RegExp(`from\\s+["']${forbiddenImport}["']`).test(content);
+      const directViolations = forbiddenModules.filter((forbiddenModule) => {
+        return importsModule(content, forbiddenModule);
       });
       const backendViolation = hasForbiddenBackendImport(filePath, content)
         ? ["@kwak-finance/backend fora de adapter server-side"]
