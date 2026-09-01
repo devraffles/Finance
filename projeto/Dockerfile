@@ -23,7 +23,7 @@ COPY . .
 RUN pnpm --filter @kwak-finance/backend exec prisma generate --schema prisma/schema.prisma
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV KWAK_DOCKER_BUILD true
-RUN pnpm run build
+RUN pnpm --dir frontend build
 
 FROM base AS production
 ENV NODE_ENV production

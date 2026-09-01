@@ -6,15 +6,15 @@ services:
     container_name: kwak_finance_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: kwak_finance
-      POSTGRES_PASSWORD: kwakfinancepass
-      POSTGRES_DB: kwak_finance
+      POSTGRES_USER: ${POSTGRES_USER:?Defina POSTGRES_USER no arquivo .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+      POSTGRES_DB: ${POSTGRES_DB:?Defina POSTGRES_DB no arquivo .env}
     ports:
       - "5433:5432"
     volumes:
       - kwak_finance_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kwak_finance"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -33,7 +33,7 @@ services:
       - .env
     environment:
       CI: "true"
-      DATABASE_URL: postgresql://kwak_finance:kwakfinancepass@db:5432/kwak_finance
+      DATABASE_URL: postgresql://${POSTGRES_USER:?Defina POSTGRES_USER no arquivo .env}:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}@db:5432/${POSTGRES_DB:?Defina POSTGRES_DB no arquivo .env}
     ports:
       - "3000:3000"
     command: >
@@ -42,7 +42,11 @@ services:
       pnpm --filter @kwak-finance/backend exec prisma generate --schema prisma/schema.prisma &&
       pnpm exec prisma migrate deploy --schema backend/prisma/schema.prisma &&
       pnpm exec prisma db seed &&
-      pnpm run dev"
+      pnpm --dir frontend dev"
 
 volumes:
   kwak_finance_postgres_data:
+
+networks:
+  default:
+    name: kwak_finance_network
