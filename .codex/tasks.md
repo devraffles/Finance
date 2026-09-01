@@ -125,6 +125,45 @@ Aceite:
 - Helpers tem comportamento coerente para moeda, data, percentual e variacao.
 - Nenhum segredo e exposto no client.
 
+## Fase 2.1 - Autenticacao Em Dois Fatores E Login Google
+
+Objetivo: reforcar o acesso ao Kwak Finance com segundo fator opcional por codigo enviado por e-mail ou aplicativo autenticador compativel com Google Authenticator, e permitir login social seguro com Google.
+
+Tarefas:
+
+- Estender a configuracao do Better Auth no backend para suportar login Google OAuth e MFA, sem remover o login existente por e-mail e senha.
+- Adicionar ao `.env.example` todos os placeholders necessarios, sem valores reais:
+  - `GOOGLE_CLIENT_ID`;
+  - `GOOGLE_CLIENT_SECRET`;
+  - configuracao de remetente/provedor de e-mail necessaria para entrega do codigo de MFA;
+  - segredo de criptografia proprio para dados sensiveis de MFA, quando exigido pela implementacao escolhida.
+- Documentar no README as variaveis, a URL de callback do Google e o processo de configuracao local; manter credenciais e segredos fora do repositorio.
+- Modelar com Prisma os dados estritamente necessarios para MFA, incluindo metodo habilitado, segredo TOTP protegido em repouso, tentativas, expiracao e uso unico de codigos por e-mail. Criar migration e atualizar o seed de modo idempotente, sem habilitar MFA para o usuario admin por padrao.
+- Implementar servico backend para iniciar, confirmar, ativar, desativar e consultar MFA. O servico deve exigir sessao e filtrar toda operacao por `userId`.
+- Implementar MFA por e-mail com codigo alfanumerico gerado por fonte criptograficamente segura, uso unico, expiracao curta e armazenamento apenas de hash do codigo. Nunca registrar, retornar em API ou persistir o codigo em texto puro.
+- Aplicar limite de tentativas, limite de reenvio e intervalo minimo entre envios de codigo. Respostas de erro nao devem revelar se uma conta, metodo ou codigo especifico existe.
+- Implementar TOTP compativel com Google Authenticator: gerar segredo e URI `otpauth` somente durante a ativacao autenticada; exibir QR code e chave manual; exigir a validacao de um codigo TOTP antes de marcar o metodo como ativo; proteger o segredo no banco e nao expo-lo depois da configuracao.
+- Definir fluxo de desafio apos credenciais primarias validas: a sessao definitiva so e criada apos validar o metodo MFA ativo. Permitir apenas um desafio pendente por vez, vinculado ao usuario e com expiracao.
+- Implementar recuperacao segura quando o usuario perder o acesso ao segundo fator, por meio de codigos de recuperacao de uso unico, exibidos apenas uma vez na ativacao e armazenados como hash. A redefinicao de MFA deve exigir autenticacao adequada e invalidar desafios/codigos anteriores.
+- Criar adapters HTTP finos em `frontend/src/app/api/**/route.ts` para os fluxos de MFA e Google OAuth, delegando validacao, entrega de e-mail e persistencia ao backend.
+- Atualizar a pagina de login com botao "Entrar com Google", login por e-mail/senha e etapa condicional para o desafio MFA. Manter textos, validacoes e mensagens em portugues do Brasil.
+- Criar em Configuracoes uma secao "Seguranca" com abas ou controles para: estado do MFA, ativacao/desativacao de e-mail, configuracao/remoção de aplicativo autenticador e visualizacao/renovacao de codigos de recuperacao. Confirmar a senha atual antes de mudancas sensiveis.
+- Garantir que contas criadas via Google possam ser associadas de forma segura a uma conta existente apenas mediante politica explicita de e-mail verificado; nunca vincular identidades por e-mail nao verificado.
+- Registrar auditoria minima de eventos sensiveis de autenticacao (ativacao/desativacao de MFA, falhas repetidas, uso de codigo de recuperacao e login Google), sem incluir senhas, codigos, tokens, segredos TOTP ou dados desnecessarios.
+- Criar testes unitarios dos servicos e testes de integracao dos fluxos: codigo de e-mail valido, expirado, reutilizado e excedendo tentativas; TOTP valido/invalido; codigo de recuperacao; protecao de rota; e login Google com callback valido e erro controlado.
+
+Aceite:
+
+- Login por e-mail e senha continua funcionando quando MFA esta desativado.
+- Usuario com MFA por e-mail ativo recebe um codigo alfanumerico, de uso unico e com expiracao; somente apos valida-lo recebe sessao autenticada.
+- Reenvios e tentativas invalidas sao limitados sem expor informacoes sensiveis.
+- Usuario consegue ativar TOTP lendo um QR code no Google Authenticator (ou app compativel) e so conclui a ativacao apos informar um codigo valido.
+- Segredo TOTP, codigos de e-mail e codigos de recuperacao nao sao retornados por endpoints, logs ou consultas de UI apos sua exibicao autorizada.
+- Usuario consegue concluir o login com TOTP e usar um codigo de recuperacao uma unica vez quando necessario.
+- Usuario consegue entrar com Google quando as variaveis OAuth estao configuradas; quando ausentes ou quando o callback falha, a UI apresenta erro controlado em portugues do Brasil.
+- Todas as rotas de configuracao, desafio e recuperacao validam payload com Zod, verificam sessao quando aplicavel e respeitam `userId`.
+- `pnpm run db:generate`, `pnpm run lint`, `pnpm run format:check`, `pnpm run typecheck` e `pnpm run build` passam; os testes adicionados passam.
+
 ## Fase 3 - Layout Base
 
 Objetivo: criar a casca navegavel do app.

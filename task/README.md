@@ -1,7 +1,7 @@
-# Material legado de tarefas
+# Tarefas suplementares
 
-Esta pasta preserva documentos historicos de retomada e referencias antigas.
+Esta pasta preserva documentos historicos e detalhamentos executaveis complementares. A fila oficial do Kwak Finance continua em `../.codex/tasks.md`; em caso de divergencia, ela e as regras em `../AGENTS.md` prevalecem.
 
-A fila oficial e exclusiva do Kwak Finance fica em `../.codex/tasks.md`. Antes de implementar, siga `../AGENTS.md` e as regras em `../.codex/rules/`.
+As tasks 18 a 22 detalham a Fase 2.1: autenticacao em dois fatores por e-mail ou TOTP compativel com Google Authenticator, codigos de recuperacao e login com Google.
 
-Nao use instrucoes desta pasta para configurar provedores de IA ou credenciais. A integracao atual usa apenas `GOOGLE_GENERATIVE_AI_API_KEY`, documentada em `../projeto/.env.example`.
+Antes de implementar, leia `../AGENTS.md` e as regras em `../.codex/rules/`. Nunca adicione credenciais, codigos MFA, tokens ou segredos a documentos, logs ou arquivos versionados.
