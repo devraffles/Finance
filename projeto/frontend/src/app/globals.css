@@ -39,9 +39,9 @@
   --color-kwak-border: var(--kwak-border);
   --color-kwak-surface: var(--kwak-surface);
   --color-kwak-surface-muted: var(--kwak-surface-muted);
-  --font-sans: var(--font-dm-sans), Arial, Helvetica, sans-serif;
+  --font-sans: "DM Sans Variable", Arial, Helvetica, sans-serif;
   --font-heading:
-    var(--font-sora), var(--font-dm-sans), Arial, Helvetica, sans-serif;
+    "Sora Variable", "DM Sans Variable", Arial, Helvetica, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
