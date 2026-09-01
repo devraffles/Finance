@@ -21,7 +21,7 @@ O contrato principal esta em `AGENTS.md`. As regras detalhadas ficam em `.codex/
 - Use Serena para codigo quando o app existir.
 - Use Obsidian para notas quando o vault/MCP estiver ativo.
 - Use Graphify quando houver necessidade de mapa de conhecimento ou quando o usuario pedir.
-- Para visualizar as conexoes do Graphify no plugin 3D Graph do Obsidian, execute `graphify . --update --code-only` e depois `./tools/export-graphify-to-obsidian.ps1`. O segundo comando gera notas locais em `graphify-notes/`, que e ignorada pelo Git.
+- Para visualizar as conexoes do Graphify no plugin 3D Graph do Obsidian, execute `graphify . --update --code-only` e depois `.\tools\export-graphify-to-obsidian.ps1`. O segundo comando gera notas locais em `graphify-notes/`, que e ignorada pelo Git.
 
 ## Comandos Futuros Do App
 
